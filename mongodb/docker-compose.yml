@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  mongo0:
+    command: --replSet "rs0" --bind_ip "0.0.0.0"
+    image: mongo:3.3.6
+    volumes:
+      - mongo0_data:/data/db
+
+  mongo1:
+    command: --replSet "rs0" --bind_ip "0.0.0.0"
+    image: mongo:3.3.6
+    volumes:
+      - mongo1_data:/data/db
+
+  mongo2:
+    command: --replSet "rs0" --bind_ip "0.0.0.0"
+    image: mongo:3.3.6
+    volumes:
+      - mongo2_data:/data/db
+
+  client:
+    build:
+      context: ./client
+
+volumes:
+  mongo0_data:
+  mongo1_data:
+  mongo2_data:
