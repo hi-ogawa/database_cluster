@@ -1,5 +1,7 @@
 ### Demonstration
 
+Prepare MongoDB replica set:
+
 ```
 $ docker-compose up -d mongo0 mongo1 mongo2
 $ docker-compose ps
@@ -54,6 +56,11 @@ $ docker-compose exec mongo0 mongo
 > db.createUser({ user: 'mongoman', pwd: 'asdfjkl', roles: ['dbOwner'] })
 > exit
 bye
+```
+
+Show how write/read operation is distributed to MongoDB cluster:
+
+```
 $ docker-compose run --rm client
 ... initialize client: `client = Mongo::Client.new` ...
 D, [2016-06-06T02:42:59.137719 #1] DEBUG -- : MONGODB | Adding mongo0:27017 to the cluster.
@@ -78,6 +85,15 @@ D, [2016-06-06T02:42:59.180128 #1] DEBUG -- : MONGODB | mongo2:27017 | rep_test_
 D, [2016-06-06T02:42:59.180513 #1] DEBUG -- : MONGODB | mongo2:27017 | rep_test_db.saslContinue | STARTED | {}
 D, [2016-06-06T02:42:59.181471 #1] DEBUG -- : MONGODB | mongo2:27017 | rep_test_db.saslContinue | SUCCEEDED | 0.000678566s
 D, [2016-06-06T02:42:59.182254 #1] DEBUG -- : MONGODB | mongo2:27017 | rep_test_db.find | SUCCEEDED | 0.01289717s
+
+```
+
+Show how "C" (Consistency) is failing for this replica set configuration:
+
+```
+$ docker-compose run compromize_consitency
+... out of 10, below number of documents was not be able to be read immidiately after creation ...
+5
 ```
 
 
