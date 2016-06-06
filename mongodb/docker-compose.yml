@@ -23,6 +23,11 @@ services:
     build:
       context: ./client
 
+  compromize_consitency:
+    build:
+      context: ./client
+    command: bundle exec ruby compromize_consistency.rb
+
 volumes:
   mongo0_data:
   mongo1_data:
