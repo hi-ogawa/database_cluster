@@ -1,7 +1,7 @@
 ### Examples
 
 - [MongoDB](https://github.com/hi-ogawa/database_cluster/tree/master/mongodb)
-- PostgresSQL (coming)
+- [PostgresSQL](https://github.com/hi-ogawa/database_cluster/tree/master/postgresql)
 
 ### Notes
 

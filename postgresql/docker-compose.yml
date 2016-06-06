@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+  primary:
+    image: postgres:9.5
+    command: postgres
+    entrypoint: ["/entrypoint.sh"]
+    environment:
+      - PGDATA=/var/lib/postgresql/primary_data
+    volumes:
+      - primary_data:/var/lib/postgresql/primary_data
+      - ./entrypoint.primary.sh:/entrypoint.sh
+      - ./pg_hba.conf.primary:/pg_hba.conf
+      - ./postgresql.conf.primary:/postgresql.conf
+
+  standby:
+    image: postgres:9.5
+    command: postgres
+    entrypoint: ["/entrypoint.sh"]
+    environment:
+      - PGDATA=/var/lib/postgresql/standby_data
+    volumes:
+      - standby_data:/var/lib/postgresql/standby_data
+      - ./entrypoint.standby.sh:/entrypoint.sh
+      - ./pg_hba.conf.standby:/pg_hba.conf
+      - ./postgresql.conf.standby:/postgresql.conf
+      - ./recovery.conf.standby:/recovery.conf
+
+  copyman:
+    image: ubuntu:14.04
+    command: /bin/bash -c "cp -rf /var/lib/postgresql/primary_data/* /var/lib/postgresql/standby_data/"
+    volumes:
+      - primary_data:/var/lib/postgresql/primary_data
+      - standby_data:/var/lib/postgresql/standby_data
+
+  client:
+    build:
+      context: ./client
+
+volumes:
+  primary_data:
+  standby_data:
